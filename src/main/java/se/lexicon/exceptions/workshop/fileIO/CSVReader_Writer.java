@@ -16,21 +16,32 @@ public class CSVReader_Writer {
      * You should also close the Buffered reader in the finally block
      * @return List<String>of male firstnames
      */
-    public static List<String> getMaleFirstNames(){
 
-        BufferedReader reader = null;
-        List <String> names = null;
+     public static List<String> getMaleFirstNames(){
 
+         BufferedReader reader = null;
+         List <String> names = new ArrayList<>();
 
-        	reader = Files.newBufferedReader(Paths.get("firstname_males.txt"));
-            names = reader.lines()
-                    .flatMap(line -> Stream.of(line.split(",")))
-                    .collect(Collectors.toList());
-
-         	return names;
-        }
-
-
+         try {
+             reader = Files.newBufferedReader(Paths.get("firstname_males.txt"));
+             names = reader.lines()
+                     .flatMap(line -> Stream.of(line.split(",")))
+                     .collect(Collectors.toList());
+         } catch (FileNotFoundException e) {
+             System.out.println("File not found: " + e.getMessage());
+         } catch (IOException e) {
+             System.out.println("Error reading file: " + e.getMessage());
+         } finally {
+             if (reader != null) {
+                 try {
+                     reader.close();
+                 } catch (IOException e) {
+                     System.out.println("Error closing file: " + e.getMessage());
+                 }
+             }
+         }
+         return names;
+     }
 
     /**
      * This method getFemaleFirstNames should make use of a try-catch with resources
@@ -38,16 +49,18 @@ public class CSVReader_Writer {
      */
     public static List<String> getFemaleFirstNames(){
 
-        List<String> names=null;
+        List<String> names= new ArrayList<>();
 
+        try {
             BufferedReader reader = Files.newBufferedReader(Paths.get("firstname_female.txt"))
-                names = reader.lines()
-                        .flatMap(line -> Stream.of(line.split(",")))
-                        .collect(Collectors.toList());
-
+            names = reader.lines()
+                    .flatMap(line -> Stream.of(line.split(",")))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
         return names;
     }
-
 
     /**
      * This method fetches strings from a file and put them into a list
