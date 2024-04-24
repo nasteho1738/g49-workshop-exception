@@ -46,6 +46,52 @@ public class CSVReader_Writer {
         return names;
     }
 
+    public static List<String> getMaleFirstNames() {
+
+        BufferedReader reader = null;
+        List<String> names = new ArrayList<>();
+
+        try {
+            reader = Files.newBufferedReader(Paths.get("firstname_males.txt"));
+            names = reader.lines()
+                    .flatMap(line -> Stream.of(line.split(",")))
+                    .collect(Collectors.toList());
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found: " + e.getMessage());
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    System.out.println("Error closing file: " + e.getMessage());
+                }
+            }
+        }
+        return names;
+    }
+
+    /**
+     * This method getFemaleFirstNames should make use of a try-catch with resources
+     * @return
+     */
+    public static List<String> getFemaleFirstNames(){
+
+        List<String> names= new ArrayList<>();
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get("firstname_female.txt"));
+            names = reader.lines()
+                    .flatMap(line -> Stream.of(line.split(",")))
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+
+        }
+        return names;
+    }
+
     /**
      * This method getFemaleFirstNames should make use of a try-catch with resources
      *
@@ -94,6 +140,7 @@ public class CSVReader_Writer {
     }
 
 
+
     public static void saveLastNames(List<String> lastNames) {
 
         try (BufferedWriter writer = Files.newBufferedWriter(Paths.get("lastnames.txt"))) {
@@ -130,6 +177,7 @@ public class CSVReader_Writer {
         } catch (IOException e) {
             System.out.println("an error occurred while saving male names: " + e.getMessage());
         }
+
 
     }
 }
